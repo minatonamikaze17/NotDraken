@@ -83,7 +83,7 @@ async def request(mikey):
 @draken.on(events.NewMessage(incoming=True,pattern=r'^/movie(.*)'))
 async def movie_search(mikey):
   try:
-    query = mikey.message.split(' ', 1)[1]
+    query = mikey.message.text.split(' ', 1)[1]
   except IndexError:
     await mikey.reply('... what to?')
   if mikey.reply_to_msg_id:
