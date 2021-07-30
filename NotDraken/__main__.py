@@ -67,7 +67,7 @@ async def request(mikey):
   link = None
   keybo = []
   async for message in takemichi.iter_messages(chat, search=query):
-    phto = hek.photo
+    #phto = hek.photo
     txt = message.raw_text.split('|')[0]
     link = message.text.split('(')[1][:-1]
     keybo.append([Button.url(text=txt, url=link)])
