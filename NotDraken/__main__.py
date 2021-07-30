@@ -73,11 +73,12 @@ async def request(mikey):
   link = None
   keybo = []
   async for message in takemichi.iter_messages(chat, search=query):
-    #phto = hek.photo
+    hek = await draken.get_messages(chat, ids = message.id)
+    phto = hek.photo
     txt = message.raw_text.split('|')[0][1:]
     link = f'https://t.me/c/{str(chat)[4:]}/{message.id}'
     keybo.append([Button.url(text=txt, url=link)])
-  await mikey.reply(f'Resuluts for {query}', buttons=keybo)
+  await mikey.reply(file=phto, caption=f'Resuluts for {query}', buttons=keybo)
   
   
 @draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|/start@DrakenKunRoBot$')) 
