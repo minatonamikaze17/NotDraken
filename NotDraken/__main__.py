@@ -5,8 +5,6 @@ from telethon.sessions import StringSession
 from telethon import errors
 from telethon.tl.types import InputMessagesFilterDocument, InputMessagesFilterVideo
 from telethon.tl.types import ChannelParticipantsAdmins
-from html_telegraph_poster import TelegraphPoster 
-from torrentscrape import thirteenX
 import asyncio 
 
 print("Starting....")
