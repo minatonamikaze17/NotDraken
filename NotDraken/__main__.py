@@ -50,11 +50,17 @@ async def admincache(mikey):
   await get_all_admins(mikey.chat_id)
   await mikey.reply('Done!')
   
-
+@draken.on(events.NewMessage(incoming=True,pattern=r'^/search(.*)'))  
 @draken.on(events.NewMessage(incoming=True, pattern=r'^#(.*)'))
 async def request(mikey):
   chat = -1001167438192
-  query = mikey.message.text[1:]
+  if mikey.message.text.startswith('/search'):
+    try:
+      query = mikey.message.split(' ', 1)[1]
+    except IndexError:
+      await mikey.reply('What to search?')
+  else:
+    query = mikey.message.text[1:]
   if query == '':
     return
   if mikey.reply_to_msg_id:
@@ -68,7 +74,7 @@ async def request(mikey):
   keybo = []
   async for message in takemichi.iter_messages(chat, search=query):
     #phto = hek.photo
-    txt = message.raw_text.split('|')[0]
+    txt = message.raw_text.split('|')[0][1:]
     link = f'https://t.me/c/{chat}/{message.id}'
     keybo.append([Button.url(text=txt, url=link)])
   await mikey.reply(f'Resuluts for {query}', buttons=keybo)
@@ -101,6 +107,7 @@ async def inline_search(mikey):
           title=f'{title}',
           description=f'{description}......',
           text=f'{message.text}',
+          link_preview=False,
           )
         )
   await mikey.answer(keybo)
