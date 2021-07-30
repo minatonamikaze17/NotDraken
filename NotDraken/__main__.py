@@ -79,9 +79,26 @@ async def request(mikey):
     link = f'https://t.me/c/{str(chat)[4:]}/{message.id}'
     keybo.append([Button.url(text=txt, url=link)])
   await mikey.reply(file=phto, buttons=keybo)
+ 
+@draken.on(NewMessage(incoming=True,pattern=r'^/movie(.*)'))
+async def movie_search(mikey):
+  try:
+    query = mikey.message.split(' ', 1)[1]
+  except IndexError:
+    await mikey.reply('... what to?')
+  if mikey.reply_to_msg_id:
+    mikey = await mikey.get_reply_message()
+  count = 0
+  async for message in takemichi.iter_messages(-1001366920767, search = query, reverse = True, filter = InputMessagesFilterDocument):
+    hek = await draken.get_messages(-1001366920767, ids = message.id)
+    await draken.send_message(mikey.chat_id, file = hek.media)
+    count += 1
+  if not count == 0:
+    await mikey.reply('👆')
+  else:
+    await mikey.reply('Not found!! ಠ_ಠ')
   
-  
-@draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|/start@DrakenKunRoBot$')) 
+@draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|')) 
 async def start(mikey):
   if mikey.is_private:
     await mikey.message.reply(f"Im {bot_name} a bot, \n\nMade for @animebite")
