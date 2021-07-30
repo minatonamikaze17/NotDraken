@@ -56,7 +56,7 @@ async def request(mikey):
   chat = -1001167438192
   if mikey.message.text.startswith('/search'):
     try:
-      query = mikey.message.split(' ', 1)[1]
+      query = mikey.message.text.split(' ', 1)[1]
     except IndexError:
       await mikey.reply('What to search?')
   else:
@@ -75,7 +75,7 @@ async def request(mikey):
   async for message in takemichi.iter_messages(chat, search=query):
     #phto = hek.photo
     txt = message.raw_text.split('|')[0][1:]
-    link = f'https://t.me/c/{chat[4:}/{message.id}'
+    link = f'https://t.me/c/{chat[4:]}/{message.id}'
     keybo.append([Button.url(text=txt, url=link)])
   await mikey.reply(f'Resuluts for {query}', buttons=keybo)
   
