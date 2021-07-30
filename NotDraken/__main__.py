@@ -1,0 +1,125 @@
+import logging 
+import os 
+from telethon import TelegramClient, events, Button
+from telethon.sessions import StringSession
+from telethon import errors
+from telethon.tl.types import InputMessagesFilterDocument, InputMessagesFilterVideo
+from telethon.tl.types import ChannelParticipantsAdmins
+from html_telegraph_poster import TelegraphPoster 
+from torrentscrape import thirteenX
+import asyncio 
+
+print("Starting....")
+
+#variables 
+
+draken_token = os.environ.get('BOT_TOKEN')
+api_id = int(os.environ.get('API_ID'))
+api_hash = os.environ.get('API_HASH')
+string = os.environ.get('STRING_SESSION')
+bot_name = os.environ.get('BOT_NAME', 'NotDraken')
+
+loop = asyncio.get_event_loop()
+
+draken = TelegramClient('bot', api_id, api_hash).start(bot_token=draken_token)
+
+takemichi = TelegramClient(StringSession(string), api_id, api_hash)
+
+if takemichi:
+  print("takemichi connected!!")
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
+
+logger = logging.getLogger("__name__")
+
+hina = TelegraphPoster(use_api=True)
+hina.create_api_token('DontKnow')
+
+#commands
+admins = []
+
+async def get_all_admins(chat_id):
+  async for admin in draken.iter_participants(chat_id, filter=ChannelParticipantsAdmins):
+    admins.append(admin.id)
+
+async def user_admin(the_fuc):
+  async def check_admin(mikey):
+    if slime.sender_id in admins:
+      return await the_fuc(mikey)
+    else:
+      pass
+
+@user_admin
+@draken.on(events.NewMessage(incoming=True,pattern=r'^\/admincache'))
+async def admincache(mikey):
+  await get_all_admins(mikey.chat_id)
+  await mikey.reply('Done!')
+  
+
+@draken.on(events.NewMessage(incoming=True, pattern=r'^#(.*)'))
+async def request(mikey):
+  chat = -1001167438192
+  query = mikey.message.text[1:]
+  if query == '':
+    return
+  if mikey.reply_to_msg_id:
+    mikey = await mikey.get_reply_message()
+  keybo = []
+  count = 0
+  text = ''
+  phto = None
+  txt = None
+  link = None
+  async for message in takemichi.iter_messages(chat, search=query):
+    if count == 1:
+      break
+    try:
+      phto = message.photo
+      txt = message.raw_text.split('|')[0]
+      link = message.text.split('(')[1][:-1]
+      count += 1
+    except Exception:
+      pass
+  await mikey.reply(text, file=phto, buttons=[Button.url(text=text, url=link)])
+  
+  
+@draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|/start@DrakenKunRoBot$')) 
+async def start(mikey):
+  if mikey.is_private:
+    await mikey.message.reply(f"Im {bot_name} a bot, \n\nMade for @animebite")
+  else:
+    await mikey.reply("Im up and working!")
+
+
+@draken.on(events.InlineQuery)
+async def inline_search(mikey):
+  if mikey.text == '':
+    await mikey.answer([], switch_pm='Search in @animebite', switch_pm_param='start')
+  the_text = mikey.text 
+  keybo = []
+  async for message in takemichi.iter_messages(-1001167438192, search=the_text):
+      if len(keybo) > 30:
+        await mikey.answer([], switch_pm='Try to be a little specific...', switch_pm_param='')
+        return
+      msg_id = message.id 
+      link = f"https://t.me/c/1167438192/{str(msg_id)}" 
+      title = message.raw_text.split('\n\n')[0]
+      description = message.raw_text.replace('\n', '|')
+      keybo.append(
+        mikey.builder.article(
+          title=f'{title}',
+          description=f'{description}......',
+          text=f'{message.text}',
+          )
+        )
+    await mikey.answer(keybo)
+
+
+print('Im online!!!')
+
+loop.run_until_complete(get_all_admins(-1001364238597))
+
+takemichi.start()
+draken.start()
+draken.run_until_disconnected()
+takemichi.run_until_disconnected()
