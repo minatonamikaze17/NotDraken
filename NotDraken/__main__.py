@@ -45,7 +45,7 @@ async def user_admin(the_fuc):
       pass
 
 @user_admin
-@draken.on(events.NewMessage(incoming=True,pattern=r'^\/admincache'))
+#@draken.on(events.NewMessage(incoming=True,pattern=r'^\/admincache'))
 async def admincache(mikey):
   await get_all_admins(mikey.chat_id)
   await mikey.reply('Done!')
@@ -112,7 +112,7 @@ async def inline_search(mikey):
 
 print('Im online!!!')
 
-loop.run_until_complete(get_all_admins(-1001422855927))
+#loop.run_until_complete(get_all_admins(-1001422855927))
 
 takemichi.start()
 draken.start()
