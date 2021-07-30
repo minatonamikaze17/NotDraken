@@ -71,7 +71,7 @@ async def request(mikey):
     txt = message.raw_text.split('|')[0]
     link = message.text.split('(')[1][:-1]
     keybo.append([Button.url(text=txt, url=link)])
-  await mikey.reply(text, buttons=keybo)
+  await mikey.reply(f'Resuluts for {query}', buttons=keybo)
   
   
 @draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|/start@DrakenKunRoBot$')) 
