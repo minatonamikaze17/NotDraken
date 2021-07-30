@@ -68,14 +68,11 @@ async def request(mikey):
   async for message in takemichi.iter_messages(chat, search=query):
     if count == 1:
       break
-    try:
-      hek = await draken.get_messages(chat2, ids = message.id)
-      phto = hek.photo
-      txt = message.raw_text.split('|')[0]
-      link = message.text.split('(')[1][:-1]
-      count += 1
-    except Exception:
-      pass
+    hek = await draken.get_messages(chat2, ids = message.id)
+    phto = hek.photo
+    txt = message.raw_text.split('|')[0]
+    link = message.text.split('(')[1][:-1]
+    count += 1
   await mikey.reply(text, file=phto, buttons=[Button.url(text=text, url=link)])
   
   
