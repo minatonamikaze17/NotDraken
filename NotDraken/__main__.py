@@ -98,7 +98,7 @@ async def movie_search(mikey):
   else:
     await mikey.reply('Not found!! ಠ_ಠ')
   
-@draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|')) 
+@draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)')) 
 async def start(mikey):
   if mikey.is_private:
     await mikey.message.reply(f"Im {bot_name} a bot, \n\nMade for @animebite")
