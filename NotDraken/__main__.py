@@ -69,7 +69,8 @@ async def request(mikey):
     if count == 1:
       break
     try:
-      phto = message.photo
+      hek = await draken.get_messages(chat2, ids = message.id)
+      phto = hek.photo
       txt = message.raw_text.split('|')[0]
       link = message.text.split('(')[1][:-1]
       count += 1
