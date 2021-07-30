@@ -80,7 +80,7 @@ async def request(mikey):
     keybo.append([Button.url(text=txt, url=link)])
   await mikey.reply(file=phto, buttons=keybo)
  
-@draken.on(NewMessage(incoming=True,pattern=r'^/movie(.*)'))
+@draken.on(events.NewMessage(incoming=True,pattern=r'^/movie(.*)'))
 async def movie_search(mikey):
   try:
     query = mikey.message.split(' ', 1)[1]
