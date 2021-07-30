@@ -78,7 +78,7 @@ async def request(mikey):
     txt = message.raw_text.split('|')[0][1:]
     link = f'https://t.me/c/{str(chat)[4:]}/{message.id}'
     keybo.append([Button.url(text=txt, url=link)])
-  await mikey.reply(file=phto, caption=f'Resuluts for {query}', buttons=keybo)
+  await draken.send_file(file=phto, buttons=keybo, reply_to=mikey.reply_to_msg_id)
   
   
 @draken.on(events.NewMessage(incoming=True, pattern=r'^/start(.*)|/start@DrakenKunRoBot$')) 
